@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{{ agent.name }} 的排程{% endblock %}
+{% block eyebrow_right %}Schedules · {{ schedules|length }}{% endblock %}
+{% block tagline %}<a href="/ui/agents/{{ agent.id }}">← {{ agent.name }}</a>{% endblock %}
+
+{% block content %}
+  {% if error %}<div class="err-box">建立失敗：{{ error }}</div>{% endif %}
+
+  <section class="block">
+    <div class="bh"><span class="n">01</span><h2>新增排程</h2></div>
+    <form class="card" method="post" action="/ui/agents/{{ agent.id }}/schedules">
+      <label class="lbl" for="cron_expression">Cron 運算式</label>
+      <input type="text" id="cron_expression" name="cron_expression" placeholder="0 9 * * *" required>
+      <p class="hint">標準 5 欄位 cron，例如 <code>0 9 * * *</code> = 每天早上 9 點。</p>
+
+      <label class="lbl" for="run_input">執行輸入（選填）</label>
+      <textarea id="run_input" name="run_input" placeholder="排程觸發時要餵給 agent 的固定輸入內容"></textarea>
+
+      <button class="btn" type="submit" style="margin-top:16px">新增排程</button>
+    </form>
+  </section>
+
+  <section class="block">
+    <div class="bh"><span class="n">02</span><h2>排程清單</h2><span class="sp"></span>
+      <span class="meta">{{ schedules|length }} 筆</span></div>
+    {% if not schedules %}
+      <p class="empty">還沒有任何排程。</p>
+    {% else %}
+      <div class="rowwrap">
+        {% for s in schedules %}
+        {% set pending = is_pending_review(s) %}
+        <div class="row">
+          <div class="main">
+            <p class="t" style="font-family:var(--mono);font-size:15px">
+              {% if pending %}<span class="dot warn"></span>{% endif %}{{ s.cron_expression }}</p>
+            <p class="d">
+              <span class="tag {{ 'agent' if s.created_by.value == 'agent' else '' }}">{{ s.created_by.value }}</span>
+              {% if pending %}
+                <span class="tag agent">待審核</span>
+              {% else %}
+                <span class="tag {{ 'on' if s.enabled else 'off' }}">{{ '啟用' if s.enabled else '停用' }}</span>
+              {% endif %}
+            </p>
+            <p class="d">下次執行 {{ s.next_run_at.strftime("%Y-%m-%d %H:%M") if s.next_run_at else "-" }}
+              · 上次執行 {{ s.last_run_at.strftime("%Y-%m-%d %H:%M") if s.last_run_at else "-" }}
+              {% if s.run_input %} · 輸入：「{{ s.run_input }}」{% endif %}</p>
+          </div>
+          <div class="side">
+            <form method="post" action="/ui/schedules/{{ s.id }}/toggle">
+              <input type="hidden" name="agent_id" value="{{ agent.id }}">
+              <button class="btn {{ '' if pending else 'alt' }} sm" type="submit">
+                {{ "核准並啟用" if pending else ("停用" if s.enabled else "啟用") }}</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

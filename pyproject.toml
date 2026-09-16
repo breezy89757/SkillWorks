@@ -1,0 +1,33 @@
+[project]
+name = "skillagent"
+version = "0.1.0"
+description = "Upload an Agent Skill, mount it on a Pydantic AI agent, run it once or on a DB-backed schedule the agent can set up for itself."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.12",
+    "sqlmodel>=0.0.22",
+    "pydantic-settings>=2.5",
+    # pydantic-ai-skills v1.4.x is the last release exposing `SkillsToolset`
+    # (directories=..., toolsets=[...]) with list_skills/load_skill/
+    # read_skill_resource/run_skill_script tools. v2.0.0 rewrote this around
+    # a `SkillsCapability` + `capabilities=` API instead, so we pin below v2.
+    "pydantic-ai-skills>=1.4,<2.0",
+    # 'openai' extra: pydantic-ai's OpenAIModel can point base_url at a LiteLLM
+    # gateway (OpenAI-compatible), matching the "LiteLLM gateway" model source
+    # noted as an open question in the spec (§9).
+    "pydantic-ai-slim[openai]>=1.105",
+    "celery[redis]>=5.4",
+    "redis>=5.0",
+    "croniter>=3.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "aiofiles>=24.1",
+]
+
+[tool.uv]
+package = false

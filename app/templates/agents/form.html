@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}新增 Agent{% endblock %}
+{% block eyebrow_right %}Agents · New{% endblock %}
+
+{% block content %}
+  <section class="block">
+    <div class="bh"><span class="n">01</span><h2>新增 Agent</h2></div>
+
+    <form class="card" method="post" action="/ui/agents/new">
+      <label class="lbl" for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label class="lbl" for="model">Model</label>
+      <input type="text" id="model" name="model" placeholder="openai:gpt-4o-mini" required>
+      <p class="hint">格式為 <code>provider:model</code>；接 Azure OpenAI 時填 deployment 名稱。可用哪些 model 目前需與管理員確認（spec §9）。</p>
+
+      <label class="lbl" for="owner">Owner（選填）</label>
+      <input type="text" id="owner" name="owner" value="">
+
+      <label class="lbl">掛載的 Skills</label>
+      <div class="checkbox-list">
+        {% if not skills %}
+          <p class="hint">目前沒有可用的 skill，先到 <a href="/ui/skills">Skills</a> 頁上傳。</p>
+        {% endif %}
+        {% for s in skills %}
+          <label>
+            <input type="checkbox" name="skill_ids" value="{{ s.id }}">
+            <span>{{ s.name }} — <span class="muted">{{ s.description }}</span></span>
+          </label>
+        {% endfor %}
+      </div>
+
+      <label class="lbl" for="instructions">Instructions</label>
+      <textarea id="instructions" name="instructions" placeholder="你是一個……"></textarea>
+
+      <button class="btn" type="submit" style="margin-top:20px">建立 Agent</button>
+    </form>
+  </section>
+{% endblock %}

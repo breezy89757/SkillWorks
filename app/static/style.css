@@ -1,0 +1,125 @@
+/* 視覺語彙沿用 ModelPlayGround（C:\Users\breez\source\ModelPlayGround）：
+   editorial / lab-report 風格——Newsreader 襯線標題、IBM Plex Mono 全大寫
+   標籤、米白紙感背景、細 rule 線、近乎直角的卡片。 */
+
+:root{
+  --paper:#efebe0; --card:#faf8f2; --ink:#16140e; --dim:#6b6553; --faint:#9a9382;
+  --rule:#d5cebb; --rule-soft:#e4ded0;
+  --pass:#2c6e31; --fail:#b3261e; --accent:#a8641f; --info:#3a4f8f;
+  --serif:"Newsreader",Georgia,serif;
+  --sans:"IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 var(--sans);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E")}
+a{color:inherit}
+.wrap{max-width:920px;margin:0 auto;padding:0 32px 100px}
+
+/* ── masthead ───────────────────────────────── */
+.mast{padding:44px 0 0;border-bottom:2px solid var(--ink)}
+.eyebrow{font:500 11px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;
+  color:var(--dim);display:flex;justify-content:space-between}
+h1.brand{font:400 46px/1 var(--serif);margin:16px 0 4px;letter-spacing:-.02em}
+h1.brand em{font-style:italic;color:var(--accent)}
+.tagline{font:italic 400 16px/1.5 var(--serif);color:var(--dim);max-width:62ch;margin:0 0 22px}
+.mast-nav{display:flex;border-top:1px solid var(--rule);margin-top:6px}
+.mast-nav a{flex:1;padding:10px 0;font:600 10px/1 var(--mono);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--faint);border-right:1px solid var(--rule-soft);
+  text-align:center;text-decoration:none;transition:.15s}
+.mast-nav a:last-child{border:0}
+.mast-nav a:hover{color:var(--ink);background:var(--card)}
+.mast-nav a.on{color:var(--ink);background:var(--card);box-shadow:inset 0 -2px var(--accent)}
+
+/* ── section blocks ─────────────────────────── */
+.block{margin-top:40px}
+.bh{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--ink);
+  padding-bottom:8px;margin-bottom:20px}
+.bh h2{font:400 24px/1 var(--serif);margin:0}
+.bh .n{font:600 10px/1 var(--mono);letter-spacing:.2em;color:var(--faint)}
+.bh .sp{flex:1}
+.bh .meta{font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+
+.card{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:22px 24px}
+.muted{color:var(--dim);font:400 13px/1.5 var(--sans)}
+.hint{color:var(--faint);font:400 12.5px/1.5 var(--sans);margin-top:6px}
+
+/* ── forms ──────────────────────────────────── */
+.lbl{font:600 10px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);display:block;margin:18px 0 8px}
+.lbl:first-child{margin-top:0}
+input[type=text],input[type=file],textarea{
+  width:100%;background:#fff;color:var(--ink);border:1px solid var(--rule);
+  border-left:3px solid var(--ink);border-radius:2px;padding:12px 14px;
+  font:400 15px/1.55 var(--serif);resize:vertical;transition:.15s}
+input[type=text]::placeholder,textarea::placeholder{color:var(--faint);font-style:italic}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--info);
+  border-left-color:var(--info);box-shadow:0 2px 16px rgba(22,20,14,.06)}
+textarea{min-height:96px;font-size:14.5px}
+.checkbox-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.checkbox-list label{font:400 14px/1.4 var(--sans);display:flex;gap:9px;align-items:flex-start;
+  color:var(--ink)}
+.checkbox-list input{margin-top:3px}
+form.card{margin:18px 0}
+
+/* ── buttons ────────────────────────────────── */
+.btn{background:var(--ink);color:var(--paper);border:0;border-radius:2px;padding:12px 24px;
+  font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;
+  transition:.15s;display:inline-block;text-decoration:none}
+.btn:hover{background:var(--accent);transform:translateY(-1px)}
+.btn.alt{background:none;border:1px solid var(--ink);color:var(--ink)}
+.btn.alt:hover{background:var(--ink);color:var(--paper)}
+.btn.sm{padding:8px 16px;font-size:10px}
+
+/* ── tags / stamps ──────────────────────────── */
+.tag{display:inline-block;font:600 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 8px;border:1px solid var(--rule);border-radius:1px;color:var(--faint)}
+.tag.agent{border-color:var(--accent);color:var(--accent);background:rgba(168,100,31,.06)}
+.tag.on{border-color:var(--pass);color:var(--pass);background:rgba(44,110,49,.06)}
+.tag.off{border-color:var(--faint);color:var(--faint)}
+.stamp{font:600 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 9px;border:1px solid;border-radius:2px;display:inline-block}
+.stamp.err{color:var(--fail);border-color:var(--fail);background:rgba(179,38,30,.06)}
+.stamp.ok{color:var(--pass);border-color:var(--pass);background:rgba(44,110,49,.06)}
+
+/* ── list rows (skills / agents / schedules / run log) ── */
+.rowwrap{border:1px solid var(--rule);border-radius:2px;overflow:hidden;background:var(--card)}
+.row{display:flex;gap:18px;align-items:flex-start;padding:16px 20px;
+  border-top:1px solid var(--rule)}
+.row:first-child{border-top:0}
+a.row{display:flex;transition:.12s}
+a.row:hover{background:var(--paper)}
+.row .main{flex:1;min-width:0}
+.row .t{font:500 17px/1.35 var(--serif);margin:0 0 4px}
+.row .d{font:400 13px/1.55 var(--sans);color:var(--dim)}
+.row .side{flex:none;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.row .meta{font:400 10.5px/1 var(--mono);color:var(--faint);letter-spacing:.03em}
+.empty{padding:20px 0;color:var(--faint);font:italic 400 14px/1.5 var(--serif)}
+
+/* ── run log entries ────────────────────────── */
+.logentry{border-top:1px dotted var(--rule);padding:16px 0}
+.logentry:first-child{border-top:0}
+.logentry .head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.logentry .ts{font:400 11px/1 var(--mono);color:var(--faint)}
+.logentry .k{font:600 9px/1.7 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:3px}
+.logentry pre{margin:0 0 10px;padding:12px 14px;background:var(--card);border:1px solid var(--rule-soft);
+  border-radius:2px;font:400 12.5px/1.6 var(--mono);white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+.logentry pre.err{color:var(--fail);border-color:var(--fail)}
+
+/* ── errors / alerts ────────────────────────── */
+.err-box{margin:16px 0;padding:14px 18px;border:1px solid var(--fail);border-left:4px solid var(--fail);
+  background:rgba(179,38,30,.04);border-radius:2px;font:400 13px/1.6 var(--mono);color:var(--fail)}
+
+code{font-family:var(--mono);font-size:.92em;background:var(--card);padding:1px 5px;border-radius:2px}
+.mono{font-family:var(--mono);font-size:.85em;color:var(--dim)}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:2px;flex:none}
+.dot.warn{background:var(--accent)}
+
+@media(max-width:640px){
+  .wrap{padding:0 18px 70px}
+  h1.brand{font-size:34px}
+  .row{flex-direction:column}
+  .row .side{align-items:flex-start;flex-direction:row}
+}

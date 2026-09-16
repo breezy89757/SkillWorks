@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Schedules{% endblock %}
+{% block eyebrow_right %}Schedules · {{ pending|length }} 待審核{% endblock %}
+{% block tagline %}Agent 在對話裡自己建立的排程，一律先卡在「待審核」——人工按下核准之前不會執行。使用者自己在頁面上填的排程不需要這一關。{% endblock %}
+
+{% block content %}
+  <section class="block">
+    <div class="bh"><span class="n">01</span><h2>待審核</h2><span class="sp"></span>
+      <span class="meta">{{ pending|length }} 筆</span></div>
+    {% if not pending %}
+      <p class="empty">目前沒有等待核准的排程。</p>
+    {% else %}
+      <div class="rowwrap">
+        {% for s, a in pending %}
+        <div class="row">
+          <div class="main">
+            <p class="t"><span class="dot warn"></span>{{ a.name }}</p>
+            <p class="d"><span class="tag agent">待審核 · agent 建立</span> <span class="mono">{{ s.cron_expression }}</span></p>
+            <p class="d">{{ s.created_at|relative }}{% if s.run_input %} · 執行輸入：「{{ s.run_input }}」{% endif %}</p>
+          </div>
+          <div class="side">
+            <a class="btn sm" href="/ui/agents/{{ a.id }}/schedules">審核 →</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="block">
+    <div class="bh"><span class="n">02</span><h2>其他排程</h2><span class="sp"></span>
+      <span class="meta">{{ others|length }} 筆</span></div>
+    {% if not others %}
+      <p class="empty">還沒有其他排程。</p>
+    {% else %}
+      <div class="rowwrap">
+        {% for s, a in others %}
+        <div class="row">
+          <div class="main">
+            <p class="t">{{ a.name }}</p>
+            <p class="d">
+              <span class="tag {{ 'agent' if s.created_by.value == 'agent' else '' }}">{{ s.created_by.value }}</span>
+              <span class="tag {{ 'on' if s.enabled else 'off' }}">{{ '啟用' if s.enabled else '停用' }}</span>
+              <span class="mono">{{ s.cron_expression }}</span>
+            </p>
+            <p class="d">下次 {{ s.next_run_at.strftime("%Y-%m-%d %H:%M") if s.next_run_at else "-" }}
+              · 上次 {{ s.last_run_at|relative }}</p>
+          </div>
+          <div class="side">
+            <a class="btn sm alt" href="/ui/agents/{{ a.id }}/schedules">管理 →</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

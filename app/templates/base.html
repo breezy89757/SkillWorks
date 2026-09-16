@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Skill Agent{% endblock %} — Skill 掛載 Agent POC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="eyebrow">
+      <span>Skill-Mounted Agent · POC</span>
+      <span>{% block eyebrow_right %}v0.3{% endblock %}</span>
+    </div>
+    <h1 class="brand">Skill<em>Agent</em></h1>
+    <p class="tagline">{% block tagline %}上傳 Skill、組出 Agent、跑一次或排程給它自己跑。{% endblock %}</p>
+    <nav class="mast-nav">
+      <a href="/ui/agents" class="{{ 'on' if active == 'agents' else '' }}">Agents</a>
+      <a href="/ui/skills" class="{{ 'on' if active == 'skills' else '' }}">Skills</a>
+      <a href="/ui/schedules" class="{{ 'on' if active == 'schedules' else '' }}">Schedules</a>
+    </nav>
+  </header>
+
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

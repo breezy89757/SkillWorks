@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Skills{% endblock %}
+{% block eyebrow_right %}Skills · {{ skills|length }}{% endblock %}
+{% block tagline %}上傳 zip（需含 SKILL.md，frontmatter 要有 name / description），掛到 Agent 上就能被動態載入。{% endblock %}
+
+{% block content %}
+  {% if error %}<div class="err-box">上傳失敗：{{ error }}</div>{% endif %}
+
+  <section class="block">
+    <div class="bh"><span class="n">01</span><h2>上傳 Skill</h2></div>
+    <form class="card" method="post" action="/ui/skills/upload" enctype="multipart/form-data">
+      <label class="lbl" for="file">Skill Zip 檔</label>
+      <input type="file" id="file" name="file" accept=".zip" required>
+      <button class="btn" type="submit" style="margin-top:16px">上傳</button>
+    </form>
+  </section>
+
+  <section class="block">
+    <div class="bh"><span class="n">02</span><h2>已上傳</h2><span class="sp"></span>
+      <span class="meta">{{ skills|length }} 個</span></div>
+    {% if not skills %}
+      <p class="empty">還沒有任何 skill。</p>
+    {% else %}
+      <div class="rowwrap">
+        {% for s in skills %}
+        <div class="row">
+          <div class="main">
+            <p class="t">{{ s.name }}</p>
+            <p class="d">{{ s.description }}</p>
+          </div>
+          <div class="side">
+            <span class="tag {{ 'agent' if s.has_scripts else '' }}">{{ 'scripts' if s.has_scripts else 'no scripts' }}</span>
+            <span class="meta">{{ s.created_at.strftime("%Y-%m-%d %H:%M") }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ agent.name }}{% endblock %}
+{% block eyebrow_right %}{{ agent.model }}{% endblock %}
+{% block tagline %}<span class="meta" style="font-style:normal">id: {{ agent.id }}</span> ·
+  <a href="/ui/agents/{{ agent.id }}/schedules">排程管理 →</a>
+  {% if pending_count %}<span class="tag agent" style="margin-left:6px">{{ pending_count }} 筆待審核</span>{% endif %}
+{% endblock %}
+
+{% block content %}
+  <section class="block">
+    <div class="bh"><span class="n">01</span><h2>設定</h2></div>
+    <div class="card">
+      <p class="lbl" style="margin-top:0">Instructions</p>
+      <p style="font:400 15px/1.6 var(--serif);margin:0 0 16px">{{ agent.instructions or "(未設定)" }}</p>
+      <p class="lbl">掛載的 Skills</p>
+      {% if not selected_skills %}
+        <p class="hint">(未掛載任何 skill)</p>
+      {% else %}
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          {% for s in selected_skills %}
+            <span class="tag agent" title="{{ s.description }}">{{ s.name }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="bh"><span class="n">02</span><h2>手動執行測試</h2></div>
+    <form class="card" method="post" action="/ui/agents/{{ agent.id }}/run">
+      <label class="lbl" for="run_input">輸入</label>
+      <textarea id="run_input" name="run_input" placeholder="輸入要傳給 agent 的訊息"></textarea>
+      <button class="btn" type="submit" style="margin-top:16px">執行一次</button>
+    </form>
+  </section>
+
+  <section class="block">
+    <div class="bh"><span class="n">03</span><h2>執行紀錄</h2><span class="sp"></span>
+      <span class="meta">最近 {{ run_logs|length }} 筆</span></div>
+    {% if not run_logs %}
+      <p class="empty">還沒有執行紀錄。</p>
+    {% else %}
+      <div class="card">
+        {% for log in run_logs %}
+          <div class="logentry">
+            <div class="head">
+              <span class="tag {{ 'agent' if log.triggered_by == 'schedule' else '' }}">{{ log.triggered_by }}</span>
+              <span class="ts">{{ log.started_at.strftime("%Y-%m-%d %H:%M:%S") }}</span>
+              {% if log.error_text %}<span class="stamp err">錯誤</span>{% endif %}
+            </div>
+            <p class="k">輸入</p>
+            <pre>{{ log.input_text }}</pre>
+            {% if log.error_text %}
+              <p class="k">錯誤</p>
+              <pre class="err">{{ log.error_text }}</pre>
+            {% else %}
+              <p class="k">輸出</p>
+              <pre>{{ log.output_text }}</pre>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Agents{% endblock %}
+{% block eyebrow_right %}Agents · {{ agents|length }}{% endblock %}
+
+{% block content %}
+  <section class="block">
+    <div class="bh"><span class="n">01</span><h2>Agents</h2><span class="sp"></span>
+      <a class="btn sm" href="/ui/agents/new">+ 新增 Agent</a></div>
+    {% if not agents %}
+      <p class="empty">還沒有任何 agent。</p>
+    {% else %}
+      <div class="rowwrap">
+        {% for a in agents %}
+        <a class="row" href="/ui/agents/{{ a.id }}" style="text-decoration:none;color:inherit">
+          <div class="main">
+            <p class="t">{{ a.name }}</p>
+            <p class="d">{{ a.skill_ids|length }} 個 skill{{ 's' if a.skill_ids|length != 1 else '' }} 掛載</p>
+          </div>
+          <div class="side">
+            <span class="tag">{{ a.model }}</span>
+            <span class="meta">{{ a.created_at.strftime("%Y-%m-%d %H:%M") }}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
